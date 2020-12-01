@@ -1,0 +1,11 @@
+AllCops:
+  NewCops: disable
+
+Naming/VariableNumber:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
