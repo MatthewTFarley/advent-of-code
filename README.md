@@ -21,3 +21,13 @@
    # ruby index.rb solve <YEAR> <DAY> <PUZZLE_ARGS>
    ruby index.rb solve 2020 1 2
    ```
+
+## Node.js Setup
+
+1. Install Node.js
+
+1. Run a solution
+   ```sh
+   # node path/to/puzzle <PUZZLE_ARGS>
+   node 2020/1/index.js 2
+   ```
