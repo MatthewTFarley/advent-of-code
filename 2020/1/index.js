@@ -1,16 +1,22 @@
-(function main(comboSizes) {
+(function main(comboSize) {
+  const COMBO_SIZE_TO_PRODUCT_FN_MAP = new Map();
+  COMBO_SIZE_TO_PRODUCT_FN_MAP.set(2, getProductsComboSizeTwo);
+  COMBO_SIZE_TO_PRODUCT_FN_MAP.set(3, getProductsComboSizeThree);
+
   try {
-    const nums = extractNumsFromInputFile();
-    const product = getProduct(comboSizes, nums);
+    const nums = extractInput();
+    const getProduct = COMBO_SIZE_TO_PRODUCT_FN_MAP.get(comboSize);
+    !getProduct && throwError(comboSize);
+    const product = getProduct(nums);
     Number.isNaN(product) ? logNotFound() : console.log(product);
 
     return product;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 })(+(process.argv[2] || 2));
 
-function extractNumsFromInputFile() {
+function extractInput() {
   return require("fs")
     .readFileSync(require("path").join(__dirname, "input.txt"))
     .toString()
@@ -18,56 +24,64 @@ function extractNumsFromInputFile() {
     .map((line) => +line);
 }
 
-function buildLookup(comboSizes, nums) {
-  return comboSizes == 2
-    ? nums.reduce(
-        (acc, num) => ({
-          ...acc,
-          [num]: 2020 - num,
-        }),
-        {}
-      )
-    : nums.reduce(
-        (acc, num) => ({
-          ...acc,
-          [num]: nums.reduce(
-            (acc2, num2) => ({
-              ...acc2,
-              [num2]: 2020 - num - num2,
-            }),
-            {}
-          ),
-        }),
-        {}
-      );
+function buildLookupComboSizeTwo(nums) {
+  return nums.reduce(
+    (acc, num) => ({
+      ...acc,
+      [num]: 2020 - num,
+    }),
+    {}
+  );
 }
 
-function getProduct(comboSizes, nums) {
-  let addend1,
-    addend2,
-    addend3 = 1;
+function buildLookupComboSizeThree(nums) {
+  return nums.reduce(
+    (acc, num) => ({
+      ...acc,
+      [num]: nums.reduce(
+        (acc2, num2) => ({
+          ...acc2,
+          [num2]: 2020 - num - num2,
+        }),
+        {}
+      ),
+    }),
+    {}
+  );
+}
 
-  const lookup = buildLookup(comboSizes, nums);
+function getProductsComboSizeTwo(nums) {
+  const lookup = buildLookupComboSizeTwo(nums);
+  const addend1 = nums.find((num) => lookup[2020 - num]);
+  const addend2 = lookup[addend1];
+  return addend1 * addend2;
+}
 
-  switch (comboSizes) {
-    case 2:
-      addend1 = nums.find((num) => lookup[2020 - num]);
-      addend2 = lookup[addend1];
-      break;
-    case 3:
-      nums.forEach((num) =>
-        nums.forEach((num2) => {
-          if (lookup[num] && lookup[num][2020 - num - num2]) {
-            if (num * num2 * (2020 - num - num2) > 0) {
-              addend1 = num;
-              addend2 = num2;
-              addend3 = 2020 - num - num2;
-            }
-          }
-        })
-      );
-  }
+function getProductsComboSizeThree(nums) {
+  let addend1;
+  let addend2;
+  let addend3;
+  const lookup = buildLookupComboSizeThree(nums);
+
+  nums.forEach((num) =>
+    nums.forEach((num2) => {
+      if (lookup[num] && lookup[num][2020 - num - num2]) {
+        if (num * num2 * (2020 - num - num2) > 0) {
+          addend1 = num;
+          addend2 = num2;
+          addend3 = 2020 - num - num2;
+        }
+      }
+    })
+  );
+
   return addend1 * addend2 * addend3;
+}
+
+function throwError(comboSize) {
+  throw new Error(
+    `Combo size of "${comboSize}" is invalid. Valid combo size values are 2 and 3.`
+  );
 }
 
 function logNotFound() {
