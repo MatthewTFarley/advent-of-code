@@ -22,6 +22,8 @@ rescue StandardError => error
   error
 end
 
+private
+
 def bisect(char1, char2)
   lambda do |range, char|
     half = range.size / 2
