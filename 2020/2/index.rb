@@ -5,11 +5,10 @@ public
 def main(puzzle_variant = '1')
   File.open("#{__dir__}/input.txt", &:readlines).select do |line|
     num1, num2, char1, char2, target_char, password = destructure(line)
+
     case puzzle_variant
-    when '1'
-      password.count(target_char).between?(num1, num2)
-    when '2'
-      [char1, char2].one?(target_char)
+    when '1' then password.count(target_char).between?(num1, num2)
+    when '2' then [char1, char2].one?(target_char)
     end
   end.count
 end

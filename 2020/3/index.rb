@@ -8,7 +8,7 @@ def main
       rise, run = slope
       next if (line_number % rise).nonzero?
 
-      extended_line = extend_line(rise, run, line.strip, line_number)
+      extended_line = extend_line(rise, run, line, line_number)
       coord = (line_number / rise) * run
       slopes_to_tree_counts[slope] = tree_count.next if extended_line[coord] == '#'
     end
@@ -20,7 +20,7 @@ end
 private
 
 def lines
-  @lines ||= File.open("#{__dir__}/input.txt", &:readlines)
+  @lines ||= IO.readlines("#{__dir__}/input.txt", chomp: true)
 end
 
 def extend_line(rise, run, line, line_number)
