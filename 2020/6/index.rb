@@ -32,7 +32,11 @@ def count_any_unique_yes
 end
 
 def count_all_yes
-  ->(group) { group.split("\n").map { |answer| answer.split('') }.reduce(&:&).count }
+  ->(group) { group.split("\n").map(&split_chars).reduce(&:&).count }
+end
+
+def split_chars
+  ->(str) { str.split('') }
 end
 
 class PuzzleVariantError < StandardError; end
