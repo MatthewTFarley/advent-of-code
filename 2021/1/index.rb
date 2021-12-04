@@ -2,7 +2,7 @@
 
 public
 
-def variant_one
+def puzzle_one
   previous_number = input.first
 
   input.slice(1..).count do |number|
@@ -10,7 +10,7 @@ def variant_one
   end
 end
 
-def variant_two
+def puzzle_two
   previous_sum = nil
   input.each_index.to_a.count do |starting|
     window = input.slice(starting..starting.next.next)

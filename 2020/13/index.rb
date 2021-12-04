@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   next_bus_to_arrive.id * time_to_wait
 end
 
-def variant_two
+def puzzle_two
   first_staggered_occurrence
 end
 

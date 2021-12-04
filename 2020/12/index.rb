@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   BearingShip.new(instructions).execute_instructions!.manhattan_distance
 end
 
-def variant_two
+def puzzle_two
   WaypointShip.new(instructions).execute_instructions!.manhattan_distance
 end
 

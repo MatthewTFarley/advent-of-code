@@ -2,13 +2,13 @@
 
 public
 
-def variant_one
+def puzzle_one
   write_to_memory(get_lines) do |memory, mask, address, value|
     memory[address] = masked_value(mask, value)
   end.values.sum
 end
 
-def variant_two
+def puzzle_two
   write_to_memory(get_lines) do |memory, mask, address, value|
     save(memory, value, masked_address(mask, address))
   end.values.sum

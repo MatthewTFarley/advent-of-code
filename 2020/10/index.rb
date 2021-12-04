@@ -2,7 +2,7 @@
 
 public
 
-def variant_one
+def puzzle_one
   adapters
   .each_cons(2)
   .group_by { |x, y| y - x }
@@ -11,7 +11,7 @@ def variant_one
   .reduce(:*)
 end
 
-def variant_two
+def puzzle_two
   get_sum(0)
 end
 

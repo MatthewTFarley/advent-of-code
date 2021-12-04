@@ -2,7 +2,7 @@
 
 public
 
-def variant_one
+def puzzle_one
   invalid = []
   other.each do |ticket|
     ticket.each do |field|
@@ -17,7 +17,7 @@ def variant_one
   invalid.sum
 end
 
-def variant_two
+def puzzle_two
   invalid_indexes = []
 
   other.each_with_index do |ticket, i|

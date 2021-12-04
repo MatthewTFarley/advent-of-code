@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   get_nth_number(2020)
 end
 
-def variant_two
+def puzzle_two
   get_nth_number(30000000)
 end
 

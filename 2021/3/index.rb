@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   power_consumption
 end
 
-def variant_two
+def puzzle_two
   life_support_rating
 end
 

@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   active_cube_count_for(Matrix.new(lines))
 end
 
-def variant_two
+def puzzle_two
   active_cube_count_for(HyperMatrix.new(lines))
 end
 

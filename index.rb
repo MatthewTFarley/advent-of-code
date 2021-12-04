@@ -11,18 +11,18 @@ class AdventCLI < Thor
 
   private
 
-  def main(puzzle_variant = '1')
-    case puzzle_variant
-    when '1' then variant_one
-    when '2' then variant_two
-    else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
+  def main(puzzle = '1')
+    case puzzle
+    when '1' then puzzle_one
+    when '2' then puzzle_two
+    else raise PuzzleError.new 'Invalid puzzle provided. Valid values are "1", and "2"'
     end
 
-  rescue PuzzleVariantError => error
+  rescue PuzzleError => error
     error
   end
 end
 
-class PuzzleVariantError < StandardError; end
+class PuzzleError < StandardError; end
 
 AdventCLI.start(ARGV)

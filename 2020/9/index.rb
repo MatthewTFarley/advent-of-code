@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   XmasDecryption.new.target
 end
 
-def variant_two
+def puzzle_two
   XmasDecryption.new.decrypt
 
 end

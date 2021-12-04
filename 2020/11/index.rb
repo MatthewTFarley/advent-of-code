@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   get_final_occupied_seat_count_for(Grid.new(lines))
 end
 
-def variant_two
+def puzzle_two
   get_final_occupied_seat_count_for(Grid.new(lines, 4, Float::INFINITY))
 end
 

@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   Program.new(boot_code).execute.first
 end
 
-def variant_two
+def puzzle_two
   Program.new(boot_code).repair
 end
 

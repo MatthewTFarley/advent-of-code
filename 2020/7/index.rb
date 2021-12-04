@@ -2,11 +2,11 @@
 
 public
 
-def variant_one(color)
+def puzzle_one(color)
   get_ancestors_of(color).uniq.count
 end
 
-def variant_two(color)
+def puzzle_two(color)
   get_descendants_count_for(color)
 end
 

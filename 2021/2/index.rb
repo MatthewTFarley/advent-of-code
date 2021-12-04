@@ -2,7 +2,7 @@
 
 public
 
-def variant_one
+def puzzle_one
   commands.each_with_object({ distance: 0, depth: 0 }) do |(direction, magnitude), coordinates|
     case direction
     when 'up' then coordinates[:depth] -= magnitude
@@ -12,7 +12,7 @@ def variant_one
   end.then(&:values).reduce(1, &:*)
 end
 
-def variant_two
+def puzzle_two
   commands.each_with_object({ distance: 0, depth: 0, aim: 0 }) do |(direction, magnitude), coordinates|
     case direction
     when 'up' then coordinates[:aim] -= magnitude

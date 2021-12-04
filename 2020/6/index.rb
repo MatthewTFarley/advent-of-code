@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   groups.map(&count_any_unique_yes).sum
 end
 
-def variant_two
+def puzzle_two
   groups.map(&count_all_yes).sum
 end
 

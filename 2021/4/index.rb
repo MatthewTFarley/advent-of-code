@@ -2,11 +2,11 @@
 
 public
 
-def variant_one
+def puzzle_one
   find(:winner)
 end
 
-def variant_two
+def puzzle_two
   find(:last_place)
 end
 
