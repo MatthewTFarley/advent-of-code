@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one
   find(:winner)
 end
@@ -141,5 +130,3 @@ end
 def input
   IO.readlines("#{__dir__}/input.txt", chomp: true)
 end
-
-class PuzzleVariantError < StandardError; end

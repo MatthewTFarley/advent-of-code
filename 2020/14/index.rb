@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one
   write_to_memory(get_lines) do |memory, mask, address, value|
     memory[address] = masked_value(mask, value)
@@ -83,5 +72,3 @@ end
 def bitwise_or(b1, b2)
   [b1, b2].map(&:to_i).reduce(:|).to_s(2)
 end
-
-class PuzzleVariantError < StandardError; end

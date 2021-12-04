@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1', color = 'shiny gold')
-  case puzzle_variant
-  when '1' then variant_one(color)
-  when '2' then variant_two(color)
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one(color)
   get_ancestors_of(color).uniq.count
 end
@@ -103,5 +92,3 @@ class Rule
       .map { |(count, color)| RuleChild.new count.to_i, color }
   end
 end
-
-class PuzzleVariantError < StandardError; end

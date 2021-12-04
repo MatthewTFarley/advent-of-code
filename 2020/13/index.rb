@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one
   next_bus_to_arrive.id * time_to_wait
 end
@@ -76,5 +65,3 @@ def first_staggered_occurrence
   end
   first_occurence
 end
-
-class PuzzleVariantError < StandardError; end

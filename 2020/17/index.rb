@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one
   active_cube_count_for(Matrix.new(lines))
 end
@@ -95,6 +84,12 @@ class Matrix
     cubes.select(&:active?)
   end
 
+  protected
+
+  def cubes
+    cube_cache.values
+  end
+
   private
 
   def copy
@@ -103,10 +98,6 @@ class Matrix
         matrix.cube_cache[cube.coords] = Cube.new(*cube.attrs, matrix)
       end
     end
-  end
-
-  def cubes
-    cube_cache.values
   end
 
   def to_s
@@ -226,7 +217,4 @@ class HyperCube < Cube
         matrix.cube_cache[neighbor_coords] ||= HyperCube.new(*neighbor_coords, INACTIVE, matrix)
       end
   end
-
 end
-
-class PuzzleVariantError < StandardError; end

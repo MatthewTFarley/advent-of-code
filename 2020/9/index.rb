@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError, DecryptionError => error
-  error
-end
-
 def variant_one
   XmasDecryption.new.target
 end
@@ -55,6 +44,3 @@ class XmasDecryption
     @input ||= IO.readlines("#{__dir__}/input.txt").map(&:to_i)
   end
 end
-
-class DecryptionError < StandardError; end
-class PuzzleVariantError < StandardError; end

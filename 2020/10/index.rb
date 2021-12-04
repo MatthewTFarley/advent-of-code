@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError => error
-  error
-end
-
 def variant_one
   adapters
   .each_cons(2)
@@ -50,5 +39,3 @@ def get_sum(index, cache = {})
   .each.sum { |option_index| get_sum(option_index, cache) }
   .tap { |sum| cache[adapter] = sum }
 end
-
-class PuzzleVariantError < StandardError; end

@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue PuzzleVariantError, InvalidOperationError => error
-  error
-end
-
 def variant_one
   Program.new(boot_code).execute.first
 end
@@ -99,10 +88,4 @@ class Program
         end
       end
   end
-
-  private
-
 end
-
-class PuzzleVariantError < StandardError; end
-class InvalidOperationError < StandardError; end

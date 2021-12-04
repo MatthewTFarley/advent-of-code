@@ -2,17 +2,6 @@
 
 public
 
-def main(puzzle_variant = '1')
-  case puzzle_variant
-  when '1' then variant_one
-  when '2' then variant_two
-  else raise PuzzleVariantError.new 'Invalid puzzle variant provided. Valid values are "1", and "2"'
-  end
-
-rescue StandardError => error
-  error
-end
-
 def variant_one
   groups.map(&count_any_unique_yes).sum
 end
@@ -38,5 +27,3 @@ end
 def split_chars
   ->(str) { str.split('') }
 end
-
-class PuzzleVariantError < StandardError; end
