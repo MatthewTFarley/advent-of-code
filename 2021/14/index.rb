@@ -3,85 +3,60 @@
 public
 
 def puzzle_one
-  i = Inserter.new
-  4.times do
-    pp i.pair_counts
-    i.old_insert
-    i.insert
-  end
-  [i.pair_counts, i.template]
-  # 10.times { |index| puts "Starting insert #{index}"; i.insert }
-  # i.minmax.values.then { |min, max| max - min }
+  difference(10)
 end
 
 def puzzle_two
-  # i = Inserter.new
-  # 40.times { |index| puts "Starting insert #{index}"; i.insert }
-  # i.minmax.values.then { |min, max| max - min }
-  i = Inserter.new
-  40.times do
-    # pp i.pair_counts
-    # i.old_insert
-    i.insert
-  end
-  i.pair_counts
+  difference(40)
 end
 
 private
 
+def difference(n)
+  Inserter.new.then do |i|
+    n.times { i.insert! }
+    i.letter_counts.values.minmax.then { |min, max| max - min }
+  end
+end
+
 class Inserter
-  attr_reader :template, :pairs, :pair_counts
+  attr_reader :template, :pairs, :pair_counts, :first_last
 
   def initialize
     @template = Input.template
     @pairs = Input.pairs
-    @pair_counts = Hash.new(0).tap do |pc|
-      template.chars.each_cons(2) do |left, right|
-        current_pair = [left, right].join
-        pc[current_pair] += 1
+    @pair_counts =
+      template
+      .chars
+      .each_cons(2)
+      .each_with_object(Hash.new(0)) do |(left, right), pc|
+        pc[[left, right].join] += 1
       end
-    end
+    @first_last = [template[0], template[-1]]
   end
 
-  def insert
-    self.pair_counts = pairs.each_with_object(pair_counts.dup) do |(pair, target), new_pair_counts|
-      match_count = pair_counts[pair]
-      # pp [pair, target, match_count]
-      # new_pair_counts[pair] = match_count
-      if match_count.nonzero?
-        new_pair_counts[pair] = 0
-        new_left_pair = [pair[0], target].join
-        new_right_pair = [target, pair[1]].join
-        new_pair_counts[new_left_pair] += match_count
-        new_pair_counts[new_right_pair] += match_count
-      end
-    end
-  end
-
-  def old_insert
-    self.template = pairs.each_with_object({}) do |(pair, target), new_segments|
-      template.chars.each_cons(2).with_index do |(left, right), i|
-        if [left, right].join == pair
-          new_segments[i] = [left, target, right]
+  def insert!
+    self.pair_counts =
+      pairs.each_with_object(pair_counts.dup) do |(pair, target), new_pair_counts|
+        match_count = pair_counts[pair]
+        if match_count.nonzero?
+          new_pair_counts[pair] -= match_count
+          left, right = pair.split('')
+          [[left, target], [target, right]].each do |l, r|
+            new_pair_counts[[l, r].join] += match_count
+          end
         end
       end
-    end.tap do |new_segments|
-      new_segments.each do |match_index, match|
-        adjacent_left_match = new_segments[match_index - 1]
-        if adjacent_left_match
-          left, target, right = match
-          new_segments[match_index] = [target, right]
-        end
+  end
+
+  def letter_counts
+    @letter_counts ||=
+      pair_counts
+      .each_with_object(Hash.new(0)) do |(pair, count), memo|
+        pair.split('').each { |letter| memo[letter] += count }
       end
-    end.sort.to_h.values.join
-  end
-
-  def tally
-    @tally ||= template.chars.tally.sort_by { |k, v| v }
-  end
-
-  def minmax
-    [tally.first, tally.last].to_h
+      .tap { |hash| first_last.each { |letter| hash[letter] += 1 } }
+      .tap { |hash| hash.each { |k, v| hash[k] /= 2 } }
   end
 
   private
@@ -92,16 +67,16 @@ end
 module Input
   class << self
     def template
-        @@template ||= IO.readlines("#{__dir__}/sample.txt", chomp: true).first
+        @@template ||= IO.readlines("#{__dir__}/input.txt", chomp: true).first
     end
 
     def pairs
       @@pairs ||=
-        IO.read("#{__dir__}/sample.txt")
+        IO
+        .read("#{__dir__}/input.txt")
         .then { |file| file.scan(/(\w\w) -> (\w)/) }
-        .each_with_object({}) do |(pair, target), memo|
-          memo[pair] = target
-        end
+        .each_with_object({}) { |(pair, target), memo| memo[pair] = target }
+        .sort_by { |k, v| k }
     end
   end
 end
