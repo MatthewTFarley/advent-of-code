@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'thor'
+require 'pp'
 
 class AdventCLI < Thor
   desc 'solve YEAR DAY ARGS', 'Solve the puzzle for the year and the day with provided args'
