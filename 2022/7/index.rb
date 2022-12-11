@@ -7,16 +7,9 @@ require 'json'
 public
 
 def puzzle_one
-  # filesystem
-  dirsizes = Hash.new(0)
-  cwd = '/'
-  prev = '/'
-  dir = filesystem[cwd]
-  explore_dir(dir, dirsizes, prev)
-  # puts JSON.pretty_generate(filesystem)
-  pp dirsizes.sort_by { |k, v| v }
-  pp dirsizes.values.count { |dirsize| dirsize <= 100000 }
-  dirsizes.values.sum { |dirsize| dirsize <= 100000 ? dirsize : 0 }
+  explore_dir.values.sum do |dirsize|
+    dirsize <= 100000 ? dirsize : 0
+  end
 end
 
 def puzzle_two
@@ -24,39 +17,19 @@ end
 
 private
 
-def explore_dir(dir, dirsizes, prev)
-  dir.each do |k, v|
-    if v.is_a? Hash
-      explore_dir(dir[k], dirsizes, k)
-      dirsizes[prev] += dirsizes[k]
-    else
-      dirsizes[prev] += v
+def explore_dir(parent = '/', current = filesystem['/'], dirsizes = Hash.new(0))
+  dirsizes.tap do
+    current.each do |item_name, item_value|
+      dirsizes[parent] +=
+        if item_value.is_a?(Hash)
+          explore_dir(item_name, item_value, dirsizes)
+          dirsizes[item_name]
+        else
+          item_value
+        end
     end
   end
 end
-
-# def filesystem
-#   @filesystem ||= {
-#     '/' => {
-#       'a' => {
-#         'e' => {
-#           'i' => 584,
-#         },
-#         'f' => 29116,
-#         'g' => 2557,
-#         'h.lst' => 62596,
-#       },
-#       'd' => {
-#         'j' => 4060174,
-#         'd.log' => 8033020,
-#         'd.ext' => 5626152,
-#         'k' => 7214296,
-#       },
-#       'b.txt' => 14848514,
-#       'c.dat' => 8504156,
-#     }
-#   }
-# end
 
 def filesystem
   dirstack = []
@@ -66,13 +39,15 @@ def filesystem
       case parsed.first
       when 'dir', /\d+/ then next
       when '$'
-        case parsed.second
+        command = parsed.second
+        case command
         when 'cd'
-          if parsed.third == '..'
+          dir = parsed.third
+          if dir == '..'
             dirstack.pop
           else
-            hash[parsed.third] ||= {}
-            dirstack.push(parsed.third)
+            dirstack.push(dir)
+            dirstack.reduce(hash) { |h, d| h[d] ||= {}; h[d] }
           end
         when 'ls'
           cwd = dirstack.last
