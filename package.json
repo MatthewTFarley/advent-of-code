@@ -1,7 +1,8 @@
 {
   "name": "advent-of-code",
   "version": "1.0.0",
-  "description": "",
+  "description": "Solutions for Advent of Code",
+  "private": true,
   "main": "index.js",
   "type": "module",
   "scripts": {
